@@ -5,7 +5,7 @@ import { ProductsData } from "../utils/data";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../store/Cartslice/CartSlice";
+import { addToCart } from '../store/CartSlice/CartSlice.js'
 const DetailedProductPage = () => {
   const dispatch = useDispatch()
   const [productdata, setProductdata] = useState(null); 

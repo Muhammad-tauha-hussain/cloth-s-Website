@@ -5,7 +5,7 @@ import { MdDelete } from "react-icons/md";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { useSelector, useDispatch } from "react-redux";
-import { removeFromCart } from "../store/Cartslice/CartSlice.jsx";
+import { removeFromCart } from '../store/CartSlice/CartSlice.js';
 
 const Cart = () => {
   const dispatch = useDispatch();

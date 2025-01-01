@@ -6,7 +6,7 @@ import Footer from "../components/Footer";
 import Card from "../components/Card"; 
 import { ProductsData } from "../utils/data"; 
 import { useDispatch } from "react-redux";
-import { getAllProducts } from "../store/ProductSlice/ProductSlice";
+import { getAllProducts } from "../store/ProductSlice/ProductSlice.js";
 
 const Products = () => {
   const dispatch = useDispatch()
