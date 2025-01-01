@@ -1,9 +1,9 @@
 import React from 'react';
 import bannerLog from '../../public/bannerLog.png'
 import bannerLogo1 from '../../public/bannerLogo1.png'
-import bannerLogo2 from '../../public/bannerLogo2.png'
+import bannerLogo2 from '../../public/bannerlogo2.png'
 import bannerLogo3 from '../../public/bannerLogo3.png'
-import bannerLogo4 from '../../public/bannerLogo4.png'
+import bannerLogo4 from '../../public/bannerlogo4.png'
 const NavbarAdds = () => {
   const logos = [bannerLog,bannerLogo1,bannerLogo2,bannerLogo3,bannerLogo4];
 
