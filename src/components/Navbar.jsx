@@ -1,21 +1,31 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { CiShoppingCart } from 'react-icons/ci';
-import { CgProfile } from 'react-icons/cg';
-import { RiArrowDropDownLine } from 'react-icons/ri';
-import { HiMenuAlt3, HiX } from 'react-icons/hi';
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { CiShoppingCart, CiSearch } from "react-icons/ci";
+import { CgProfile } from "react-icons/cg";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate()
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const navigate = useNavigate();
 
   // Navigation links array
   const navLinks = [
-    { href: '/products', label: 'Shop', hasDropdown: true },
-    { href: '/commingSoon', label: 'On Sale' },
-    { href: '/commingSoon', label: 'New Arrival' },
-    { href: '/commingSoon', label: 'Brands' },
+    { href: "/products", label: "Shop", hasDropdown: true },
+    { href: "/commingSoon", label: "On Sale" },
+    { href: "/commingSoon", label: "New Arrival" },
+    { href: "/commingSoon", label: "Brands" },
   ];
+
+  // Close mobile menu on window resize
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 640) setMenuOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="w-full bg-white shadow-md">
@@ -30,12 +40,45 @@ const Navbar = () => {
 
           {/* Navigation Links */}
           <ul className="hidden sm:flex md:space-x-6 text-gray-800 font-bold">
-            {navLinks.map((link, index) => (
-              <li key={index}>
-                <Link to={link.href} className="hover:text-gray-900 flex gap-1 items-center">
-                  {link.label}
-                  {link.hasDropdown && <RiArrowDropDownLine className="text-2xl" />}
-                </Link>
+            {navLinks.map((link) => (
+              <li key={link.href} className="relative">
+                {link.hasDropdown ? (
+                  <button
+                    className="hover:text-gray-900 flex gap-1 items-center"
+                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                  >
+                    {link.label}
+                    <RiArrowDropDownLine className="text-2xl" />
+                  </button>
+                ) : (
+                  <Link to={link.href} className="hover:text-gray-900">
+                    {link.label}
+                  </Link>
+                )}
+
+                {/* Dropdown Menu */}
+                {link.hasDropdown && dropdownOpen && (
+                  <ul className="absolute left-0 top-8 bg-white shadow-md w-32 rounded-md">
+                    <li>
+                      <Link
+                        to="/category1"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Category 1
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        to="/category2"
+                        className="block px-4 py-2 hover:bg-gray-100"
+                        onClick={() => setDropdownOpen(false)}
+                      >
+                        Category 2
+                      </Link>
+                    </li>
+                  </ul>
+                )}
               </li>
             ))}
           </ul>
@@ -44,19 +87,36 @@ const Navbar = () => {
           <button
             className="sm:hidden text-3xl text-gray-800 focus:outline-none"
             onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle navigation menu"
+            aria-expanded={menuOpen}
           >
             {menuOpen ? <HiX /> : <HiMenuAlt3 />}
           </button>
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center space-x-4">
-          {/* SearchBar Component Placeholder */}
-          <div className="border border-gray-300 px-4 py-2 rounded-md">Search</div>
-          <button onClick={()=> navigate('/cart')}>
-          <CiShoppingCart className="text-3xl text-gray-800 cursor-pointer hover:text-gray-900" />
+        <div className="flex  items-center space-x-4">
+          {/* Search Icon for Small Screens */}
+          <button className="sm:hidden text-2xl text-gray-800 focus:outline-none">
+            <CiSearch />
           </button>
-          <CgProfile className="text-3xl text-gray-800 cursor-pointer hover:text-gray-900" />
+
+          {/* Search Input for Larger Screens */}
+          <input
+            type="text"
+            placeholder="Search..."
+            className="hidden sm:block border border-gray-300 px-4 py-2 rounded-md focus:outline-none"
+          />
+
+          {/* Cart Button */}
+          <button onClick={() => navigate("/cart")}>
+            <CiShoppingCart className="text-3xl text-gray-800 cursor-pointer hover:text-gray-900" />
+          </button>
+
+          {/* Profile Link */}
+          <Link to="/profile">
+            <CgProfile className="text-2xl text-gray-800 cursor-pointer hover:text-gray-900" />
+          </Link>
         </div>
       </div>
 
@@ -64,9 +124,13 @@ const Navbar = () => {
       {menuOpen && (
         <div className="sm:hidden bg-white w-full shadow-lg">
           <ul className="flex flex-col items-center space-y-4 py-4 text-gray-800 font-bold">
-            {navLinks.map((link, index) => (
-              <li key={index}>
-                <Link to={link.href} className="hover:text-gray-900 flex gap-1 items-center">
+            {navLinks.map((link) => (
+              <li key={link.href}>
+                <Link
+                  to={link.href}
+                  className="hover:text-gray-900 flex gap-1 items-center"
+                  onClick={() => setMenuOpen(false)}
+                >
                   {link.label}
                   {link.hasDropdown && <RiArrowDropDownLine className="text-2xl" />}
                 </Link>
