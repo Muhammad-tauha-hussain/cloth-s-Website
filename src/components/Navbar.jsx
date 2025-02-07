@@ -12,7 +12,7 @@ const Navbar = () => {
 
   // Navigation links array
   const navLinks = [
-    { href: "/products", label: "Shop", hasDropdown: true },
+    { href: "/products", label: "Shop", hasDropdown: false },
     { href: "/commingSoon", label: "On Sale" },
     { href: "/commingSoon", label: "New Arrival" },
     { href: "/commingSoon", label: "Brands" },
