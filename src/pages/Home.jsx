@@ -8,8 +8,6 @@ import Testimonials from "../components/Testimonials.jsx";
 import { testimonials } from "./../utils/data.js";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/firebaseConfig.jsx";
-import Navbar from "../components/Navbar.jsx";
-import Footer from "../components/Footer.jsx";
 const Home = () => {
   const navigate = useNavigate()
   // const [isAuthenticated, setIsAuthenticated] = useState(null); // null means "loading"
@@ -79,7 +77,7 @@ const Home = () => {
   return (
     <>
       <div>
-        <Navbar />
+        {/* <Navbar /> */}
         <Header />
         <NavbarAdds />
         {/* New Arrivals Section */}
@@ -139,7 +137,7 @@ const Home = () => {
             />
           ))}
         </div>
-        <Footer />
+        {/* <Footer /> */}
       </div>
 
     </>

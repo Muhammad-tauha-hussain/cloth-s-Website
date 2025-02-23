@@ -4,8 +4,15 @@ import { CiShoppingCart, CiSearch } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
+import SearchBar from "./SearchBar";
+import { useSelector } from "react-redux";
 
 const Navbar = () => {
+  const cartItemsLength = useSelector((state)=> state.Cart.items.length)
+  useEffect(()=>{
+    console.log(cartItemsLength);
+    
+  },[cartItemsLength])
   const [menuOpen, setMenuOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -102,19 +109,21 @@ const Navbar = () => {
           </button>
 
           {/* Search Input for Larger Screens */}
-          <input
-            type="text"
-            placeholder="Search..."
-            className="hidden sm:block border border-gray-300 px-4 py-2 rounded-md focus:outline-none"
-          />
+          <SearchBar />
 
           {/* Cart Button */}
-          <button onClick={() => navigate("/cart")}>
+          <button
+            onClick={() => navigate("/cart")}
+            className="relative flex items-center gap-2"
+          >
             <CiShoppingCart className="text-3xl text-gray-800 cursor-pointer hover:text-gray-900" />
+            <span className="absolute top-0 right-0 -mt-2 -mr-2 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+              {cartItemsLength}
+            </span>
           </button>
 
           {/* Profile Link */}
-          <Link to="/profile">
+          <Link to="/login">
             <CgProfile className="text-2xl text-gray-800 cursor-pointer hover:text-gray-900" />
           </Link>
         </div>

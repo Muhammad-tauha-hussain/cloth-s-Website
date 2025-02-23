@@ -1,38 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { FaFilter, FaArrowRight } from "react-icons/fa";
-import { IoIosArrowDropup } from "react-icons/io";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import Card from "../components/Card";
 import { ProductsData } from "../utils/data";
-import { useDispatch } from "react-redux";
-import { getAllProducts } from "../store/ProductSlice/ProductSlice.js";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts } from "../store/ProductSlice/ProductSlice";
 
 const Products = () => {
   const dispatch = useDispatch();
+  const searchItem = useSelector((state) => state.search.query);
+
+  // Local states for filtering
   const [price, setPrice] = useState(50);
   const [filteredProducts, setFilteredProducts] = useState(ProductsData);
-  const [showCategories, setShowCategories] = useState(false); // State for toggling categories
+  const [showCategories, setShowCategories] = useState(false);
 
+  // Function to filter products by category or size while keeping the price filter active
   const filterProductsFunc = (filtered) => {
     const filterItems = ProductsData.filter((item) => {
       const isCategoryMatch = item.category.toLowerCase() === filtered.toLowerCase();
       const isSizeMatch = item.sizes.some((size) => size.toLowerCase() === filtered.toLowerCase());
-      return isCategoryMatch || isSizeMatch;
+      const isPriceMatch = item.price <= price; // Keep products within the selected price range
+      return (isCategoryMatch || isSizeMatch) && isPriceMatch;
     });
     setFilteredProducts(filterItems);
-    setShowCategories(false); // Close the categories section after selection (mobile)
+    setShowCategories(false);
   };
 
+  // Dispatch an action to store all products (if needed)
   useEffect(() => {
     dispatch(getAllProducts(ProductsData));
-  }, []);
+  }, [dispatch]);
+
+  // useEffect to update filtered products based on search query and price range
+  useEffect(() => {
+    let searchFilteredProducts = ProductsData.filter(
+      (product) =>
+        product.price <= price && // Filter by price
+        (searchItem.trim() === "" ||
+          product.name.toLowerCase().includes(searchItem.toLowerCase()))
+    );
+    setFilteredProducts(searchFilteredProducts);
+  }, [searchItem, price]);
 
   return (
     <div>
-      <Navbar />
-
-      {/* Select Category Button for Mobile */}
       <div className="md:hidden w-full flex justify-center my-4">
         <button
           onClick={() => setShowCategories(true)}
@@ -43,8 +54,7 @@ const Products = () => {
       </div>
 
       <div className="w-[90%] mx-auto mb-20 mt-5 flex flex-col md:flex-row gap-5">
-        
-        {/* Filter Sidebar (Takes Full Screen on Mobile) */}
+        {/* Filter Sidebar */}
         <div
           className={`fixed md:relative bg-white w-full md:w-1/3 border rounded-lg shadow-lg p-4 h-fit z-50 transition-all duration-300 ${
             showCategories ? "top-0 left-0 h-full" : "hidden md:block"
@@ -83,7 +93,7 @@ const Products = () => {
           <hr className="my-6" />
 
           {/* Price Range */}
-          <div>
+          {/* <div>
             <h5 className="text-lg font-semibold mb-3">Price</h5>
             <div className="flex items-center justify-between text-sm">
               <span>${50}</span>
@@ -101,7 +111,7 @@ const Products = () => {
             <p className="text-center text-gray-700 mt-2">
               Selected Price: <span className="font-semibold">${price}</span>
             </p>
-          </div>
+          </div> */}
 
           <hr className="my-6" />
 
@@ -133,14 +143,18 @@ const Products = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
               {filteredProducts.map((item) => (
-                <Card key={item.id} url={item.image} headings={item.name} id={item.id} price={item.price} />
+                <Card
+                  key={item.id}
+                  url={item.image}
+                  headings={item.name}
+                  id={item.id}
+                  price={item.price}
+                />
               ))}
             </div>
           )}
         </div>
       </div>
-
-      <Footer />
     </div>
   );
 };

@@ -1,14 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
-import Navbar from "../components/Navbar.jsx";
-import Footer from "../components/Footer.jsx";
 import { useSelector, useDispatch } from "react-redux";
 import { removeFromCart } from "../store/CartSlice/CartSlice.js";
 
 
-const Cart = () => {
+const CartPage = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.Cart.items);
 
@@ -27,9 +25,13 @@ const Cart = () => {
     dispatch({ type: "UPDATE_CART_ITEM_QUANTITY", payload: { id, operation } });
   };
 
+  useEffect(()=>{
+      window.scrollTo(0,0);
+    },[])
+
   return (
     <div>
-      <Navbar />
+     
       <div className="max-w-[90%] mx-auto min-h-screen mt-10 sm:mt-5">
         {/* Breadcrumb */}
         <div className="flex gap-2 mb-5 text-sm">
@@ -119,9 +121,8 @@ const Cart = () => {
           </div>
         </div>
       </div>
-      <Footer />
     </div>
   );
 };
 
-export default Cart;
+export default CartPage;

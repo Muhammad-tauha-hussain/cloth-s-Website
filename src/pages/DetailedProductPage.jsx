@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Card from "../components/Card";
 import { ProductsData } from "../utils/data";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+
 import { useDispatch } from "react-redux";
 import { addToCart } from '../store/CartSlice/CartSlice.js'
 const DetailedProductPage = () => {
@@ -11,6 +10,10 @@ const DetailedProductPage = () => {
   const [productdata, setProductdata] = useState(null); 
   const [relatedProducts, setRelatedProducts] = useState([]); 
   const { id } = useParams(); 
+
+  useEffect(()=>{
+    window.scrollTo(0,0);
+  },[id])
 
   useEffect(() => {
     if (id) {
@@ -39,7 +42,6 @@ const DetailedProductPage = () => {
 
   return (
     <div>
-      <Navbar/>
     <div className="p-6 md:p-12 bg-gray-50">
       <div className="max-w-6xl mx-auto bg-white shadow-md rounded-lg overflow-hidden">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -161,7 +163,6 @@ const DetailedProductPage = () => {
         </div>
       </div>
     </div>
-    <Footer/>
     </div>
   );
 };
