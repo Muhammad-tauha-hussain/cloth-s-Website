@@ -10,7 +10,7 @@ const ProductSlice = createSlice({
     reducers: {
         getAllProducts : (state, {payload} ) =>{
             state.products = payload
-            console.log( 'Products data ==>' , state.products);
+            // console.log( 'Products data ==>' , state.products);
             
         }
     }
